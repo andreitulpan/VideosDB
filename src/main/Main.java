@@ -2,7 +2,9 @@ package main;
 
 import checker.Checkstyle;
 import checker.Checker;
+import commands.InputCommands;
 import common.Constants;
+import database.Database;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
@@ -70,7 +72,16 @@ public final class Main {
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
 
-        //TODO add here the entry point to your implementation
+        Database database = new Database();
+        database.setActors(input.getActors());
+        database.setMovies(input.getMovies());
+        database.setUsers(input.getUsers());
+        database.setSeries(input.getSerials());
+
+        InputCommands commands = new InputCommands();
+        commands.setActionsList(input.getCommands());
+        commands.getData(database, fileWriter, arrayResult);
+        commands.ActionsExecute();
 
         fileWriter.closeJSON(arrayResult);
     }
