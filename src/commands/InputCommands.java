@@ -5,6 +5,9 @@ import fileio.ActionInputData;
 import fileio.Writer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import userCommands.userFavorite;
+import userCommands.userRating;
+import userCommands.userView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,18 +58,15 @@ public class InputCommands {
     public void ActionsExecute() {
         for (Actions action: actionsList) {
             String stringOut = "";
-//            switch(action.getActionType()) {
-//
-//                case "command" -> {
-//                    switch(action.getType()) {
-//                        case "favorite" -> {
-//                        }
-//                        case "rating" -> {
-//                        }
-//                        case "view" -> {
-//                        }
-//                    }
-//                }
+            switch(action.getActionType()) {
+
+                case "command" -> {
+                    switch(action.getType()) {
+                        case "favorite" -> stringOut = new userFavorite().setFavorite(database, action.getUsername(), action.getTitle());
+                        case "rating" -> stringOut = new userRating().setRating(database, action.getUsername(), action.getTitle(), action.getSeasonNumber(), action.getGrade());
+                        case "view" -> stringOut = new userView().setView(database, action.getUsername(), action.getTitle());
+                    }
+                }
 //
 //                case "query" -> {
 //                    switch(action.getCriteria()) {
@@ -103,7 +103,7 @@ public class InputCommands {
 //                        }
 //                    }
 //                }
-//            }
+            }
 
             JSONObject output = null;
             try {
