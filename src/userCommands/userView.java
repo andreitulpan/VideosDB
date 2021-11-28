@@ -1,5 +1,6 @@
 package userCommands;
 
+import commands.Actions;
 import database.Database;
 import entities.Users;
 import fileio.Writer;
@@ -11,10 +12,11 @@ import java.io.IOException;
 public class userView {
     public userView() {}
 
-    public String setView(Database database, String username, String title) {
+    public String setView(Database database, Actions action) {
+        String title = action.getTitle();
         Users user = null;
         for (Users forUser: database.getUsers()) {
-            if (forUser.getUsername().equals(username)) {
+            if (forUser.getUsername().equals(action.getUsername())) {
                 user = forUser;
                 break;
             }

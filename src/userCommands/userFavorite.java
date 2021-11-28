@@ -1,14 +1,17 @@
 package userCommands;
 
+import commands.Actions;
 import database.Database;
 import entities.Users;
+import fileio.ActionInputData;
 
 public class userFavorite {
     public userFavorite() {}
-    public String setFavorite(Database database, String username, String title) {
+    public String setFavorite(Database database, Actions action) {
+        String title = action.getTitle();
         Users user = null;
         for (Users forUser: database.getUsers()) {
-            if (forUser.getUsername().equals(username)) {
+            if (forUser.getUsername().equals(action.getUsername())) {
                 user = forUser;
                 break;
             }

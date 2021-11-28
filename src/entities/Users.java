@@ -1,5 +1,7 @@
 package entities;
 
+import database.Database;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -30,6 +32,23 @@ public class Users {
 
     public ArrayList<String> getFavoriteMovies() {
         return favoriteMovies;
+    }
+
+    public int NumberOfRatings(Database database) {
+        int counter = 0;
+        for (Movies movie: database.getMovies()) {
+            if (movie.getRatings().containsKey(username)) {
+                counter++;
+            }
+        }
+        for (Series serial: database.getSeries()) {
+            for (Seasons season: serial.getSeasons()) {
+                if (season.getRatings().containsKey(username)) {
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
     @Override

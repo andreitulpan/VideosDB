@@ -1,5 +1,6 @@
 package userCommands;
 
+import commands.Actions;
 import database.Database;
 import entities.Movies;
 import entities.Series;
@@ -10,21 +11,16 @@ import org.json.simple.JSONArray;
 import java.util.ArrayList;
 
 public class userRating {
-//    public Rating(Users user, String title, double rating, Database database) {
-//        if (user.getHistory().containsKey(title)) {
-//            for (Movies movie: database.getMovies()) {
-//                if (movie.getTitle().equals(title) && !(movie.getRatings().containsKey(user.getUsername()))) {
-//                    movie.getRatings().put(user.getUsername(), rating);
-//                }
-//            }
-//        }
-//    }
     public userRating() {}
 
-    public String setRating(Database database, String username, String title, int season, double rating) {
+    public String setRating(Database database, Actions action) {
+        String username = action.getUsername();
+        String title = action.getTitle();
+        int season = action.getSeasonNumber();
+        double rating = action.getGrade();
         Users user = null;
         for (Users forUser: database.getUsers()) {
-            if (forUser.getUsername().equals(username)) {
+            if (forUser.getUsername().equals(action.getUsername())) {
                 user = forUser;
                 break;
             }

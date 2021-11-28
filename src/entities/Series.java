@@ -28,6 +28,31 @@ public class Series extends Shows {
         return seasons;
     }
 
+    public double SeriesAverage() {
+        double sum = 0;
+        int count = 0;
+        for (Seasons season: seasons) {
+            if (season.getRatings().isEmpty())
+                count++;
+            for (Double value: season.getRatings().values()) {
+                sum += value;
+                count++;
+            }
+        }
+        if (count == 0)
+            return sum;
+        setRating(sum / count);
+        return sum / count;
+    }
+
+    public int getDuration() {
+        int duration = 0;
+        for (Seasons season: seasons) {
+            duration += season.getDuration();
+        }
+        return duration;
+    }
+
     @Override
     public String toString() {
         return "Series{" + " title= "

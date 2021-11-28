@@ -1,5 +1,7 @@
 package entities;
 
+import database.Database;
+
 import java.util.ArrayList;
 
 public class Shows {
@@ -41,4 +43,23 @@ public class Shows {
         return genres;
     }
 
+    public int FavoritesCount(Database database) {
+        int counter = 0;
+        for (Users user: database.getUsers()) {
+            if (user.getFavoriteMovies().contains(getTitle())) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public int ViewsCount(Database database) {
+        int views = 0;
+        for (Users user: database.getUsers()) {
+            if (user.getHistory().containsKey(getTitle())) {
+                views += user.getHistory().get(getTitle());
+            }
+        }
+        return views;
+    }
 }

@@ -5,6 +5,14 @@ import fileio.ActionInputData;
 import fileio.Writer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import queries.actors.Average;
+import queries.actors.Awards;
+import queries.actors.FilterDescription;
+import queries.shows.Favorite;
+import queries.shows.Longest;
+import queries.shows.MostViewed;
+import queries.shows.Rating;
+import queries.users.NumberOfRatings;
 import userCommands.userFavorite;
 import userCommands.userRating;
 import userCommands.userView;
@@ -62,33 +70,26 @@ public class InputCommands {
 
                 case "command" -> {
                     switch(action.getType()) {
-                        case "favorite" -> stringOut = new userFavorite().setFavorite(database, action.getUsername(), action.getTitle());
-                        case "rating" -> stringOut = new userRating().setRating(database, action.getUsername(), action.getTitle(), action.getSeasonNumber(), action.getGrade());
-                        case "view" -> stringOut = new userView().setView(database, action.getUsername(), action.getTitle());
+                        case "favorite" -> stringOut = new userFavorite().setFavorite(database, action);
+                        case "rating" -> stringOut = new userRating().setRating(database, action);
+                        case "view" -> stringOut = new userView().setView(database, action);
                     }
                 }
-//
-//                case "query" -> {
-//                    switch(action.getCriteria()) {
-//                        case "average" -> {
-//                        }
-//                        case "awards" -> {
-//                        }
-//                        case "filter_description" -> {
-//                        }
-//                        case "ratings" -> {
-//                        }
-//                        case "favorite" -> {
-//                        }
-//                        case "longest" -> {
-//                        }
-//                        case "most_viewed" -> {
-//                        }
-//                        case "num_ratings" -> {
-//                        }
-//                    }
-//                }
-//
+
+                case "query" -> {
+                    switch(action.getCriteria()) {
+                        case "average" -> stringOut = new Average().getResult(database, action.getNumber(), action.getFilters(), action.getSortType());
+//                        case "awards" -> stringOut = new Awards().getResult(database, (ArrayList<String>) action.getFilters().get(2), (ArrayList<String>) action.getFilters().get(3), action.getSortType());
+                        case "awards" -> stringOut = new Awards().getResult(database, action.getFilters(), action.getSortType());
+                        case "filter_description" -> stringOut = new FilterDescription().getResult(database, action.getFilters(), action.getSortType());
+                        case "ratings" -> stringOut = new Rating().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
+                        case "favorite" -> stringOut = new Favorite().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
+                        case "longest" -> stringOut = new Longest().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
+                        case "most_viewed" -> stringOut = new MostViewed().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
+                        case "num_ratings" -> stringOut = new NumberOfRatings().getResult(database, action.getNumber(), action.getSortType());
+                    }
+                }
+
 //                case "recommendation" -> {
 //                    switch(action.getType()) {
 //                        case "standard" -> {
