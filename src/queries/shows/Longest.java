@@ -12,7 +12,7 @@ import java.util.List;
 public class Longest {
     public Longest() {}
 
-    public String getResult(Database database, int N, List<List<String>> filters, String objectType, String sortType) {
+    public String getResult(Database database, int n, List<List<String>> filters, String objectType, String sortType) {
         StringBuilder stringOut = new StringBuilder();
         stringOut.append("Query result: []");
         ArrayList<Shows> showsClone = new ArrayList<>();
@@ -54,14 +54,14 @@ public class Longest {
                 }
             }
         }
-        if (showsClone.size() < N)
-            N = showsClone.size();
+        if (showsClone.size() < n)
+            n = showsClone.size();
         sort(showsClone, database, sortType);
         stringOut = new StringBuilder();
         stringOut.append("Query result: [");
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             stringOut.append(showsClone.get(i).getTitle());
-            if (i != N - 1)
+            if (i != n - 1)
                 stringOut.append(", ");
         }
         stringOut.append("]");

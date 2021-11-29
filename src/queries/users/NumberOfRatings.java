@@ -9,7 +9,7 @@ import java.util.Comparator;
 public class NumberOfRatings {
     public NumberOfRatings() {}
 
-    public String getResult(Database database, int N, String sortType) {
+    public String getResult(Database database, int n, String sortType) {
 //        StringBuilder stringOut = new StringBuilder();
 //        stringOut.append("Query result: []");
         ArrayList<Users> usersClone = new ArrayList<>(database.getUsers());
@@ -17,11 +17,11 @@ public class NumberOfRatings {
         sort(usersClone, database, sortType);
         StringBuilder stringOut = new StringBuilder();
         stringOut.append("Query result: [");
-        if (usersClone.size() < N)
-            N = usersClone.size();
-        for (int i = 0; i < N; i++) {
+        if (usersClone.size() < n)
+            n = usersClone.size();
+        for (int i = 0; i < n; i++) {
             stringOut.append(usersClone.get(i).getUsername());
-            if (i != N - 1)
+            if (i != n - 1)
                 stringOut.append(", ");
         }
         stringOut.append("]");
