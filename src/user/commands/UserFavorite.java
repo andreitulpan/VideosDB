@@ -1,13 +1,19 @@
-package userCommands;
+package user.commands;
 
-import commands.Actions;
 import database.Database;
 import entities.Users;
 import fileio.ActionInputData;
 
-public class userFavorite {
-    public userFavorite() {}
-    public String setFavorite(Database database, Actions action) {
+import static common.Constants.ERROR;
+import static common.Constants.NOT_SEEN;
+import static common.Constants.SUCCESS;
+import static common.Constants.ALREADY_FAVOURITE;
+import static common.Constants.ADDED_SUCCESS;
+
+
+public final class UserFavorite {
+    private UserFavorite() { }
+    public static String setFavorite(final Database database, final ActionInputData action) {
         String title = action.getTitle();
         Users user = null;
         for (Users forUser: database.getUsers()) {
@@ -18,15 +24,15 @@ public class userFavorite {
         }
         assert user != null;
         StringBuilder stringOut = new StringBuilder();
-        stringOut.append("error -> ").append(title).append(" is not seen");
+        stringOut.append(ERROR).append(title).append(NOT_SEEN);
         if (user.getHistory().containsKey(title)) {
             if (!user.getFavoriteMovies().contains(title)) {
                 user.getFavoriteMovies().add(title);
                 stringOut = new StringBuilder();
-                stringOut.append("success -> ").append(title).append(" was added as favourite");
+                stringOut.append(SUCCESS).append(title).append(ADDED_SUCCESS);
             } else {
                 stringOut = new StringBuilder();
-                stringOut.append("error -> ").append(title).append(" is already in favourite list");
+                stringOut.append(ERROR).append(title).append(ALREADY_FAVOURITE);
             }
         }
         return stringOut.toString();

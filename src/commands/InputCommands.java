@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import queries.actors.Average;
 import queries.actors.Awards;
 import queries.actors.FilterDescription;
-import queries.shows.Favorite;
+import queries.shows.QueryFavorite;
 import queries.shows.Longest;
 import queries.shows.MostViewed;
 import queries.shows.Rating;
@@ -17,91 +17,98 @@ import recommendation.BestUnseen;
 import recommendation.Popular;
 import recommendation.Search;
 import recommendation.Standard;
-import userCommands.userFavorite;
-import userCommands.userRating;
-import userCommands.userView;
+import user.commands.UserFavorite;
+import user.commands.UserRating;
+import user.commands.UserView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class InputCommands {
-    private final List<Actions> actionsList;
-    private Database database;
-    private Writer fileWriter;
-    private JSONArray arrayResult;
+@SuppressWarnings("unchecked")
 
-    public InputCommands() {
-        this.actionsList = new ArrayList<>();
-        this.database = null;
-    }
-    public List<Actions> getActionsList() {
-        return actionsList;
-    }
+public final class InputCommands {
 
-    public void setActionsList(List<ActionInputData> actionsList) {
-        for (ActionInputData action: actionsList) {
-            switch (action.getActionType()) {
-                case "recommendation" -> {
-                    Actions thisAction = new Actions(action.getActionId(), action.getActionType(),
-                            action.getType(), action.getUsername(), action.getGenre());
-                    this.actionsList.add(thisAction);
-                }
-                case "query" -> {
-                    Actions thisAction = new Actions(action.getActionId(), action.getActionType(),
-                            action.getObjectType(), action.getSortType(), action.getCriteria(), action.getNumber(), action.getFilters());
-                    this.actionsList.add(thisAction);
-                }
-                case "command" -> {
-                    Actions thisAction = new Actions(action.getActionId(), action.getActionType(), action.getType(), action.getUsername(),
-                            action.getTitle(), action.getGrade(), action.getSeasonNumber());
-                    this.actionsList.add(thisAction);
-                }
-            }
-        }
-    }
+    private InputCommands() { }
 
-    public void getData(Database database, Writer fileWriter ,JSONArray arrayResult) {
-        this.database = database;
-        this.fileWriter = fileWriter;
-        this.arrayResult = arrayResult;
-    }
-
-    public void ActionsExecute() {
-        for (Actions action: actionsList) {
+    public static void actionsExecute(final Database database, final Writer fileWriter,
+                                      final JSONArray arrayResult) {
+        for (ActionInputData action: database.getActions()) {
             String stringOut = "";
-            switch(action.getActionType()) {
+            switch (action.getActionType()) {
 
                 case "command" -> {
-                    switch(action.getType()) {
-                        case "favorite" -> stringOut = new userFavorite().setFavorite(database, action);
-                        case "rating" -> stringOut = new userRating().setRating(database, action);
-                        case "view" -> stringOut = new userView().setView(database, action);
+                    switch (action.getType()) {
+                        case "favorite" ->  {
+                            stringOut = UserFavorite.setFavorite(database, action);
+                        }
+                        case "rating" -> {
+                            stringOut = UserRating.setRating(database, action);
+                        }
+                        case "view" -> {
+                            stringOut = UserView.setView(database, action);
+                        }
+                        default -> { }
                     }
                 }
 
                 case "query" -> {
-                    switch(action.getCriteria()) {
-                        case "average" -> stringOut = new Average().getResult(database, action.getNumber(), action.getFilters(), action.getSortType());
-                        case "awards" -> stringOut = new Awards().getResult(database, action.getFilters(), action.getSortType());
-                        case "filter_description" -> stringOut = new FilterDescription().getResult(database, action.getFilters(), action.getSortType());
-                        case "ratings" -> stringOut = new Rating().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
-                        case "favorite" -> stringOut = new Favorite().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
-                        case "longest" -> stringOut = new Longest().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
-                        case "most_viewed" -> stringOut = new MostViewed().getResult(database, action.getNumber(), action.getFilters(), action.getObjectType(), action.getSortType());
-                        case "num_ratings" -> stringOut = new NumberOfRatings().getResult(database, action.getNumber(), action.getSortType());
+                    switch (action.getCriteria()) {
+                        case "average" -> {
+                            stringOut = Average.getResult(database, action);
+                        }
+                        case "awards" -> {
+                            stringOut = Awards.getResult(database, action);
+                        }
+                        case "filter_description" -> {
+                            stringOut = FilterDescription.getResult(database, action);
+                        }
+
+                        case "ratings" -> {
+                            stringOut = Rating.getResult(database, action);
+                        }
+                        case "favorite" -> {
+                            stringOut = QueryFavorite.getResult(database, action);
+                        }
+                        case "longest" -> {
+                            stringOut = Longest.getResult(database, action);
+                        }
+                        case "most_viewed" -> {
+                            stringOut = MostViewed.getResult(database, action);
+                        }
+
+                        case "num_ratings" -> {
+                            stringOut = NumberOfRatings.getResult(database, action);
+                        }
+                        default -> { }
                     }
                 }
 
                 case "recommendation" -> {
-                    switch(action.getType()) {
-                        case "standard" -> stringOut = Standard.getResult(database, action.getUsername());
-                        case "best_unseen" -> stringOut = BestUnseen.getResult(database, action.getUsername());
-                        case "popular" -> stringOut = Popular.getResult(database, action.getUsername());
-                        case "favorite" -> stringOut = recommendation.Favorite.getResult(database, action.getUsername());
-                        case "search" -> stringOut = Search.getResult(database, action.getUsername(), action.getGenre());
+                    switch (action.getType()) {
+                        case "standard" -> {
+                            stringOut = Standard.getResult(
+                                        database, action.getUsername());
+                        }
+                        case "best_unseen" -> {
+                            stringOut = BestUnseen.getResult(
+                                        database, action.getUsername());
+                        }
+                        case "popular" -> {
+                            stringOut = Popular.getResult(
+                                        database, action.getUsername());
+                        }
+                        case "favorite" -> {
+                            stringOut = recommendation.Favorite.getResult(
+                                        database, action.getUsername());
+                        }
+                        case "search" -> {
+                            stringOut = Search.getResult(
+                                        database, action.getUsername(), action.getGenre());
+                        }
+                        default -> { }
                     }
                 }
+
+                default -> { }
             }
 
             JSONObject output = null;

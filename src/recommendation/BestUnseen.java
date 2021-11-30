@@ -7,14 +7,17 @@ import entities.Shows;
 import entities.Users;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+
+import static common.Constants.BEST_UNSEEN;
+import static common.Constants.ERROR_APPLIED;
+import static common.Constants.RESULT;
 
 public final class BestUnseen {
-    private BestUnseen() {}
+    private BestUnseen() { }
 
-    public static String getResult(Database database, String username) {
+    public static String getResult(final Database database, final String username) {
         StringBuilder stringOut = new StringBuilder();
-        stringOut.append("BestRatedUnseenRecommendation cannot be applied!");
+        stringOut.append(BEST_UNSEEN).append(ERROR_APPLIED);
         Users user = null;
         for (Users forUser: database.getUsers()) {
             if (forUser.getUsername().equals(username)) {
@@ -22,15 +25,15 @@ public final class BestUnseen {
                 break;
             }
         }
-        if (user != null ) {
+        if (user != null) {
             ArrayList<Shows> shows = new ArrayList<>();
             shows.addAll(database.getMovies());
             shows.addAll(database.getSeries());
-            sort(shows, database);
+            sort(shows);
             for (Shows show: shows) {
                 if (!user.getHistory().containsKey(show.getTitle())) {
                     stringOut = new StringBuilder();
-                    stringOut.append("BestRatedUnseenRecommendation result: ");
+                    stringOut.append(BEST_UNSEEN).append(RESULT);
                     stringOut.append(show.getTitle());
                     break;
                 }
@@ -39,17 +42,24 @@ public final class BestUnseen {
         return stringOut.toString();
     }
 
-    private static void sort(ArrayList<Shows> input, Database database) {
-        input.sort(new Comparator<>() {
-            @Override
-            public int compare(Shows s1, Shows s2) {
-                double duration1 = 0, duration2 = 0;
-                if(s1 instanceof Movies) { duration1 = ((Movies) s1).MovieAverage();}
-                if(s2 instanceof Movies) { duration2 = ((Movies) s2).MovieAverage();}
-                if(s1 instanceof Series) { duration1 = ((Series) s1).SeriesAverage();}
-                if(s2 instanceof Series) { duration2 = ((Series) s2).SeriesAverage();}
-                return Double.compare(duration2, duration1);
+    private static void sort(final ArrayList<Shows> input) {
+        input.sort((s1, s2) -> {
+            double duration1 = 0, duration2 = 0;
+
+            if (s1 instanceof Movies) {
+                duration1 = ((Movies) s1).movieAverage();
             }
+            if (s2 instanceof Movies) {
+                duration2 = ((Movies) s2).movieAverage();
+            }
+            if (s1 instanceof Series) {
+                duration1 = ((Series) s1).seriesAverage();
+            }
+            if (s2 instanceof Series) {
+                duration2 = ((Series) s2).seriesAverage();
+            }
+
+            return Double.compare(duration2, duration1);
         });
     }
 }

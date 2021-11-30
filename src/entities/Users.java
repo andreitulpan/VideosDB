@@ -5,13 +5,14 @@ import database.Database;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Users {
+public final class Users {
     private final String username;
     private final String subscriptionType;
     private final Map<String, Integer> history;
     private final ArrayList<String> favoriteMovies;
 
-    public Users(String username, String subscriptionType, Map<String, Integer> history, ArrayList<String> favoriteMovies) {
+    public Users(final String username, final String subscriptionType,
+                 final Map<String, Integer> history, final ArrayList<String> favoriteMovies) {
         this.username = username;
         this.subscriptionType = subscriptionType;
         this.history = history;
@@ -34,7 +35,7 @@ public class Users {
         return favoriteMovies;
     }
 
-    public int NumberOfRatings(Database database) {
+    public int numberOfRatings(final Database database) {
         int counter = 0;
         for (Movies movie: database.getMovies()) {
             if (movie.getRatings().containsKey(username)) {

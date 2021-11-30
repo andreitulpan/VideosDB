@@ -3,26 +3,22 @@ package entities;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Seasons {
+public final class Seasons {
     private final int currentSeason;
     private int duration;
     private Map<String, Double> ratings;
 
-    public Seasons(int currentSeason, int duration) {
+    public Seasons(final int currentSeason, final int duration) {
         this.currentSeason = currentSeason;
         this.duration = duration;
         ratings = new HashMap<>();
-    }
-
-    public int getCurrentSeason() {
-        return currentSeason;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
@@ -30,7 +26,7 @@ public class Seasons {
         return ratings;
     }
 
-    public void setRatings(Map<String, Double> ratings) {
+    public void setRatings(final Map<String, Double> ratings) {
         this.ratings = ratings;
     }
 

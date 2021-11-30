@@ -1,18 +1,16 @@
-package userCommands;
+package user.commands;
 
-import commands.Actions;
 import database.Database;
 import entities.Users;
-import fileio.Writer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import fileio.ActionInputData;
 
-import java.io.IOException;
+import static common.Constants.SUCCESS;
+import static common.Constants.VIEWED_SUCCESS;
 
-public class userView {
-    public userView() {}
+public final class UserView {
+    private UserView() { }
 
-    public String setView(Database database, Actions action) {
+    public static String setView(final Database database, final ActionInputData action) {
         String title = action.getTitle();
         Users user = null;
         for (Users forUser: database.getUsers()) {
@@ -28,7 +26,8 @@ public class userView {
         } else {
             user.getHistory().put(title, 1);
         }
-        stringOut.append("success -> ").append(title).append(" was viewed with total views of ").append(user.getHistory().get(title));
+        stringOut.append(SUCCESS).append(title).append(VIEWED_SUCCESS);
+        stringOut.append(user.getHistory().get(title));
         return stringOut.toString();
     }
 }

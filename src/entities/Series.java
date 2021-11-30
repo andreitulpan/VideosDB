@@ -4,14 +4,16 @@ import entertainment.Season;
 
 import java.util.ArrayList;
 
-public class Series extends Shows {
+public final class Series extends Shows {
     private final int numberOfSeasons;
     private final ArrayList<Seasons> seasons;
 
-    public Series(String title, int year, ArrayList<String> cast, ArrayList<String> genres, int numberOfSeasons, ArrayList<Season> seasons) {
+    public Series(final String title, final int year,
+                  final ArrayList<String> cast, final ArrayList<String> genres,
+                  final int numberOfSeasons, final ArrayList<Season> seasons) {
         super(title, year, cast, genres);
         this.numberOfSeasons = numberOfSeasons;
-        this.seasons = new ArrayList<Seasons>();
+        this.seasons = new ArrayList<>();
         int seasonNumber = 1;
         for (Season season: seasons) {
             Seasons dbSeason = new Seasons(seasonNumber, season.getDuration());
@@ -20,27 +22,25 @@ public class Series extends Shows {
         }
     }
 
-    public int getNumberOfSeasons() {
-        return numberOfSeasons;
-    }
-
     public ArrayList<Seasons> getSeasons() {
         return seasons;
     }
 
-    public double SeriesAverage() {
+    public double seriesAverage() {
         double sum = 0;
         int count = 0;
         for (Seasons season: seasons) {
-            if (season.getRatings().isEmpty())
+            if (season.getRatings().isEmpty()) {
                 count++;
+            }
             for (Double value: season.getRatings().values()) {
                 sum += value;
                 count++;
             }
         }
-        if (count == 0)
+        if (count == 0) {
             return sum;
+        }
         setRating(sum / count);
         return sum / count;
     }

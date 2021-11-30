@@ -75,4 +75,31 @@ public final class Constants {
     public static final int MAX_LENGTH = 50;
 
     // add any constants you think you may use
+    public static final int FILTER_YEAR = 0;
+    public static final int FILTER_GENRE = 1;
+    public static final int FILTER_WORDS = 2;
+    public static final int FILTER_AWARDS = 3;
+    public static final String QUERY_RESULT = "Query result: [";
+    public static final String LEFT_PARANTH = "[";
+    public static final String RIGHT_PARANTH = "]";
+    public static final String COMMA = ", ";
+    public static final String ASC = "asc";
+    public static final String DESC = "desc";
+    public static final String BEST_UNSEEN = "BestRatedUnseenRecommendation";
+    public static final String FAVORITE_RECOM = "FavoriteRecommendation";
+    public static final String POPULAR_RECOM = "PopularRecommendation";
+    public static final String SEARCH_RECOM = "SearchRecommendation";
+    public static final String STANDARD_RECOM = "StandardRecommendation";
+    public static final String ERROR_APPLIED = " cannot be applied!";
+    public static final String RESULT = " result: ";
+    public static final String PREMIUM = "PREMIUM";
+    public static final String ERROR = "error -> ";
+    public static final String SUCCESS = "success -> ";
+    public static final String NOT_SEEN = " is not seen";
+    public static final String ADDED_SUCCESS = " was added as favourite";
+    public static final String ALREADY_FAVOURITE = " is already in favourite list";
+    public static final String RATED = " was rated with ";
+    public static final String BY = " by ";
+    public static final String ALREADY_RATED = " has been already rated";
+    public static final String VIEWED_SUCCESS = " was viewed with total views of ";
 }

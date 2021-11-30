@@ -19,8 +19,8 @@ import static common.Constants.COMMA;
 import static common.Constants.ASC;
 import static common.Constants.DESC;
 
-public final class MostViewed {
-    private MostViewed() { }
+public final class QueryFavorite {
+    private QueryFavorite() { }
 
     public static String getResult(final Database database, final ActionInputData action) {
         int n = action.getNumber();
@@ -31,14 +31,14 @@ public final class MostViewed {
         ArrayList<String> years = new ArrayList<>(filters.get(FILTER_YEAR));
         ArrayList<String> genres = new ArrayList<>(filters.get(FILTER_GENRE));
         if (action.getObjectType().equals(MOVIES)) {
-            for (Movies movie: database.getMovies()) {
+            for (Movies movie : database.getMovies()) {
                 int ok = 0;
                 String year = String.valueOf(movie.getYear());
                 if (years.contains(year)) {
                     ok = 1;
                 }
                 int counter = 0;
-                for (String genre: genres) {
+                for (String genre : genres) {
                     if (movie.getGenres().contains(genre)) {
                         counter++;
                     }
@@ -46,20 +46,20 @@ public final class MostViewed {
                 if ((ok == 1 || filters.get(FILTER_YEAR).get(0) == null)
                         && (counter == genres.size()
                         || filters.get(FILTER_GENRE).get(0) == null)
-                        && movie.viewsCount(database) != 0) {
+                        && movie.favoritesCount(database) != 0) {
                     showsClone.add(movie);
                 }
             }
         }
         if (action.getObjectType().equals(SHOWS)) {
-            for (Series serial: database.getSeries()) {
+            for (Series serial : database.getSeries()) {
                 int ok = 0;
                 String year = String.valueOf(serial.getYear());
                 if (years.contains(year)) {
                     ok = 1;
                 }
                 int counter = 0;
-                for (String genre: genres) {
+                for (String genre : genres) {
                     if (serial.getGenres().contains(genre)) {
                         counter++;
                     }
@@ -67,7 +67,7 @@ public final class MostViewed {
                 if ((ok == 1 || filters.get(FILTER_YEAR).get(0) == null)
                         && (counter == genres.size()
                         || filters.get(FILTER_GENRE).get(0) == null)
-                        && serial.viewsCount(database) != 0) {
+                        && serial.favoritesCount(database) != 0) {
                     showsClone.add(serial);
                 }
             }
@@ -93,9 +93,9 @@ public final class MostViewed {
         input.sort((s1, s2) -> {
             int comparator = 0;
             if (sortType.equals(ASC)) {
-                comparator = s1.viewsCount(database) - s2.viewsCount(database);
+                comparator = s1.favoritesCount(database) - s2.favoritesCount(database);
             } else if (sortType.equals(DESC)) {
-                comparator = s2.viewsCount(database) - s1.viewsCount(database);
+                comparator = s2.favoritesCount(database) - s1.favoritesCount(database);
             }
             if (comparator == 0) {
                 if (sortType.equals(ASC)) {

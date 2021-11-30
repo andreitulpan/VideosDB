@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Movies extends Shows {
+public final class Movies extends Shows {
     private final int duration;
     private Map<String, Double> ratings;
 
 
-    public Movies(String title, int year, ArrayList<String> cast, ArrayList<String> genres, int duration) {
+    public Movies(final String title, final int year, final ArrayList<String> cast,
+                  final ArrayList<String> genres, final int duration) {
         super(title, year, cast, genres);
         this.duration = duration;
         this.ratings = new HashMap<>();
@@ -23,13 +24,14 @@ public class Movies extends Shows {
         return ratings;
     }
 
-    public void setRatings(Map<String, Double> ratings) {
+    public void setRatings(final Map<String, Double> ratings) {
         this.ratings = ratings;
     }
 
-    public double MovieAverage() {
-        if (ratings.isEmpty())
+    public double movieAverage() {
+        if (ratings.isEmpty()) {
             return 0;
+        }
         double sum = 0;
         int count = 0;
         for (Double value: ratings.values()) {
@@ -38,8 +40,9 @@ public class Movies extends Shows {
                 count++;
             }
         }
-        if (count == 0)
+        if (count == 0) {
             return sum;
+        }
         setRating(sum / count);
         return sum / count;
     }

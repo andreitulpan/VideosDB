@@ -72,16 +72,10 @@ public final class Main {
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
 
-        Database database = new Database();
-        database.setActors(input.getActors());
-        database.setMovies(input.getMovies());
-        database.setUsers(input.getUsers());
-        database.setSeries(input.getSerials());
+        Database database = Database.getInstance();
+        database.initDatabase(input);
 
-        InputCommands commands = new InputCommands();
-        commands.setActionsList(input.getCommands());
-        commands.getData(database, fileWriter, arrayResult);
-        commands.ActionsExecute();
+        InputCommands.actionsExecute(database, fileWriter, arrayResult);
 
         fileWriter.closeJSON(arrayResult);
     }

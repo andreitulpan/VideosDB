@@ -2,45 +2,44 @@ package queries.actors;
 
 import database.Database;
 import entities.Actors;
+import fileio.ActionInputData;
 import queries.UtilsQueries;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
-public class FilterDescription {
-    public FilterDescription() {}
+import static common.Constants.QUERY_RESULT;
+import static common.Constants.RIGHT_PARANTH;
+import static common.Constants.COMMA;
+import static common.Constants.ASC;
+import static common.Constants.DESC;
 
-    public String getResult(Database database, List<List<String>> filters, String sortType) {
+public final class FilterDescription {
+    private FilterDescription() { }
+
+    public static String getResult(final Database database, final ActionInputData action) {
         ArrayList<Actors> actorsClone = new ArrayList<>();
-        UtilsQueries.VerifyFiltersActors(database, actorsClone, filters);
-        sort(actorsClone, sortType);
-//        if (sortType.equals("asc"))
-//            sort_asc(actorsClone);
-//        else if (sortType.equals("desc"))
-//            sort_desc(actorsClone);
-
+        UtilsQueries.verifyFiltersActors(database, actorsClone, action.getFilters());
+        sort(actorsClone, action.getSortType());
         StringBuilder stringOut = new StringBuilder();
-        stringOut.append("Query result: [");
+        stringOut.append(QUERY_RESULT);
         for (int i = 0; i < actorsClone.size(); i++) {
             stringOut.append(actorsClone.get(i).getName());
-            if (i != actorsClone.size() - 1)
-                stringOut.append(", ");
+            if (i != actorsClone.size() - 1) {
+                stringOut.append(COMMA);
+            }
         }
-        stringOut.append("]");
+        stringOut.append(RIGHT_PARANTH);
         return stringOut.toString();
     }
 
-    private void sort(ArrayList<Actors> input, String sortType) {
-        input.sort(new Comparator<Actors>() {
-            @Override
-            public int compare(Actors a1, Actors a2) {
-                if (sortType.equals("asc"))
-                    return a1.getName().compareToIgnoreCase(a2.getName());
-                else if (sortType.equals("desc"))
-                    return a2.getName().compareToIgnoreCase(a1.getName());
-                return 0;
+    private static void sort(final ArrayList<Actors> input, final String sortType) {
+        input.sort((a1, a2) -> {
+            if (sortType.equals(ASC)) {
+                return a1.getName().compareToIgnoreCase(a2.getName());
+            } else if (sortType.equals(DESC)) {
+                return a2.getName().compareToIgnoreCase(a1.getName());
             }
+            return 0;
         });
     }
 }

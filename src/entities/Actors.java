@@ -7,14 +7,14 @@ import utils.Utils;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Actors {
+public final class Actors {
     private final String name;
     private final String careerDescription;
     private final ArrayList<String> filmography;
     private final Map<ActorsAwards, Integer> awards;
-    private double rating;
 
-    public Actors(String name, String careerDescription, ArrayList<String> filmography, Map<ActorsAwards, Integer> awards) {
+    public Actors(final String name, final String careerDescription,
+                  final ArrayList<String> filmography, final Map<ActorsAwards, Integer> awards) {
         this.name = name;
         this.careerDescription = careerDescription;
         this.filmography = filmography;
@@ -37,54 +37,47 @@ public class Actors {
         return awards;
     }
 
-    public double ActorAverage(Database database) {
+    public double actorAverage(final Database database) {
         double sum = 0;
         double count = 0;
         for (String showTitle: filmography) {
             for (Movies movie: database.getMovies()) {
                 if (movie.getTitle().equals(showTitle)) {
-                    if (movie.MovieAverage() != 0) {
-                        sum += movie.MovieAverage();
+                    if (movie.movieAverage() != 0) {
+                        sum += movie.movieAverage();
                         count++;
                     }
                 }
             }
             for (Series serial: database.getSeries()) {
                 if (serial.getTitle().equals(showTitle)) {
-                    if (serial.SeriesAverage() != 0) {
-                        sum += serial.SeriesAverage();
+                    if (serial.seriesAverage() != 0) {
+                        sum += serial.seriesAverage();
                         count++;
                     }
                 }
             }
         }
-        if (count == 0)
+        if (count == 0) {
             return sum;
+        }
         return sum / count;
     }
 
-    public Integer ActorAward(ActorsAwards searchedAward) {
-        for (Map.Entry<ActorsAwards, Integer> entry: awards.entrySet()) {
-            if (entry.getKey().equals(searchedAward)) {
-                return entry.getValue();
-            }
-        }
-        return 0;
-    }
-
-    public Integer ActorAwards(ArrayList<String> searchedAwards) {
+    public Integer actorAwards(final ArrayList<String> searchedAwards) {
         int counter = 0;
         for (String award: searchedAwards) {
             if (awards.containsKey(Utils.stringToAwards(award))) {
                 counter++;
             }
         }
-        if (counter != searchedAwards.size())
+        if (counter != searchedAwards.size()) {
             return 0;
+        }
         return 1;
     }
 
-    public Integer TotalActorAwards() {
+    public Integer actorTotalAwards() {
         int total = 0;
         for (Integer value: awards.values()) {
                 total += value;

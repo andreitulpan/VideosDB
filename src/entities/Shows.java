@@ -11,7 +11,8 @@ public class Shows {
     private final ArrayList<String> genres;
     private double rating;
 
-    public Shows(String title, int year, ArrayList<String> cast, ArrayList<String> genres) {
+    public Shows(final String title, final int year, final ArrayList<String> cast,
+                 final ArrayList<String> genres) {
         this.title = title;
         this.year = year;
         this.cast = cast;
@@ -19,31 +20,31 @@ public class Shows {
         this.rating = 0;
     }
 
-    public double getRating() {
+    public final double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public final void setRating(final double rating) {
         this.rating = rating;
     }
 
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    public int getYear() {
+    public final int getYear() {
         return year;
     }
 
-    public ArrayList<String> getCast() {
+    public final ArrayList<String> getCast() {
         return cast;
     }
 
-    public ArrayList<String> getGenres() {
+    public final ArrayList<String> getGenres() {
         return genres;
     }
 
-    public int FavoritesCount(Database database) {
+    public final int favoritesCount(final Database database) {
         int counter = 0;
         for (Users user: database.getUsers()) {
             if (user.getFavoriteMovies().contains(getTitle())) {
@@ -53,7 +54,7 @@ public class Shows {
         return counter;
     }
 
-    public int ViewsCount(Database database) {
+    public final int viewsCount(final Database database) {
         int views = 0;
         for (Users user: database.getUsers()) {
             if (user.getHistory().containsKey(getTitle())) {
