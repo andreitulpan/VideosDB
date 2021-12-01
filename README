@@ -1,38 +1,41 @@
-Object Oriented Programming Course
-Homework - VideosDB
-
-November 2021
-
-# Info
-https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema
-
-# About the code
-
-We provide the input tests, the logic that parses them and the checker that runs them.
-
-* test_db - contains the tests in JSON format
-* src
-   * checker - the checker's sources including the checkstyle necessary files, not to be modified
-   * fileio - classes for parsing the input files, not to be modified
-   * common, utils
-        * contain utility classes with constants and static methods
-        * you can add your own functionality in the existing classes or add new classes as well
-   * actor
-        * contains an enum for the types of awards an actor can have - do not modify it
-        * you can add here your actor related classes
-   * entertainment
-        * contains an enum for the supported video genres - do not modify it
-        * class for representing a Season of a tv show - do not modify it
-        * you can add here your entertainment related classes
-
-We encourage you to organize your implementation in packages based on the functionality their classes offer. Try to keep
-your code modular, readable and documented.
-
-# Testing
-
-The Main class runs the checker on your implementation. Add the entry point to your implementation in it.
-
-Run Main to test your implementation from the IDE or from command line.
-
-Run the main method from Test class with the name of the input file from the command line and the result will be written
-to the out.txt file. Thus, you can compare this result with ref.
+# Copyright 2021 - Tulpan Andrei 324CA
+	Pentru implementarea temei, am implementat
+baza de date sub forma a mai multe liste,
+folosind ArrayList-uri. Aceste liste sunt:
+	-> movies - pentru filme;
+	-> series - pentru seriale;
+	-> actors - pentru actori;
+	-> users - pentru useri;
+	-> actions - pentru actiuni.
+Am folosit implementarea de lazy singleton
+pentru database, pentru o rulare mai rapida
+a checker-ului.
+	In metoda statica actionsExecute, am 
+parcurs lista actiunilor primite si pentru
+fiecare actiune in parte am verificat tipul
+acesteia, apoi am apelat metoda corespunzatoare
+fiecarui tip de actiune.
+	Metodele pentru actiuni, le-am implementat
+ca metode statice in mai multe clase. Aceste
+clase sunt impartite in 3 pachete reprezentative
+pentru tipul actiunilor: user.commands, queries
+si recommendation. Pachetul queries este si el
+impartit la randul lui in 3 pachete: actors, 
+show si users, denumirea acestora reprezentand
+pe ce liste se fac query-urile.
+	In pachetul entities am implementat clasele:
+Actors, Movies, Seasons, Series, Shows si Users.
+Clasele sunt reprezentative si implementeaza
+entitatile pe care le reprezinta, mai putin clasa
+Shows care este implementata ca o clasa abstracta,
+deoarece aceasta nu este instantiata, ci este o 
+clasa parinte pentru clasele Movies si Series.
+	In clasa Constants am adaugat cateva constante
+pentru a evita rescrierea repetata a unor string-uri
+si a unor cifre reprezentative.
+	In clasa Utils am adaugat si aici cateva functii
+necesare pentru evitarea repetivitatii codului.
+	Fiecare metoda are JavaDoc-urile corespunzatoare
+si comentarii prin cod pentru o mai buna intelegere
+a acestuia.
+	
