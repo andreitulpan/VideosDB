@@ -5,6 +5,7 @@ import entities.Movies;
 import entities.Series;
 import entities.Shows;
 import entities.Users;
+import utils.Utils;
 
 import java.util.ArrayList;
 
@@ -19,25 +20,41 @@ import static common.Constants.LEFT_PARANTH;
 public final class Search {
     private Search() { }
 
+    /**
+     * Intoarce toate show-urile nevizualizate
+     * de user dintr-un anumit gen.
+     *
+     * @param database baza de date
+     * @param username numele user-ului
+     * @return show-urile cautate
+     */
     public static String getResult(final Database database,
                                    final String username, final String genre) {
+        // Creeaza string-ul ce va fi returnat
         StringBuilder stringOut = new StringBuilder();
         stringOut.append(SEARCH_RECOM).append(ERROR_APPLIED);
-        Users user = null;
-        for (Users forUser: database.getUsers()) {
-            if (forUser.getUsername().equals(username)) {
-                user = forUser;
-                break;
-            }
-        }
+
+        // Cauta user-ul in baza de date dupa username
+        Users user = Utils.findUser(database, username);
+
+        // Daca user-ul exista si are premium cauta show-ul
         if (user != null && user.getSubscriptionType().equals(PREMIUM)) {
+            // Creeaza lista cu toate show-uri din baza de date
             ArrayList<Shows> shows = new ArrayList<>();
             shows.addAll(database.getMovies());
             shows.addAll(database.getSeries());
+
+            // Sterge show-urile care nu contin gen-ul primit ca filtru
             shows.removeIf(x -> (!x.getGenres().contains(genre)));
+
+            // Cauta user-ul in baza de date dupa username
             Users finalUser = user;
             shows.removeIf(x -> (finalUser.getHistory().containsKey(x.getTitle())));
+
+            // Sorteaza lista de show-uri dupa rating
             sort(shows);
+
+            // Intoarce lista de show-uri nevizualizate
             stringOut = new StringBuilder();
             stringOut.append(SEARCH_RECOM).append(RESULT).append(LEFT_PARANTH);
             for (int i = 0; i < shows.size(); i++) {
@@ -47,6 +64,8 @@ public final class Search {
                 }
             }
             stringOut.append(RIGHT_PARANTH);
+
+            // Daca nu exista show-uri afiseaza un mesaj de eroare
             if (shows.size() == 0) {
                 stringOut = new StringBuilder();
                 stringOut.append(SEARCH_RECOM).append(ERROR_APPLIED);
@@ -55,6 +74,11 @@ public final class Search {
         return stringOut.toString();
     }
 
+    /**
+     *  Sorteaza lista de show-uri dupa rating-uri.
+     *
+      * @param input lista de show-uri
+     */
     private static void sort(final ArrayList<Shows> input) {
         input.sort((s1, s2) -> {
             int comparator;

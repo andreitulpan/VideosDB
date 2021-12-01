@@ -30,6 +30,12 @@ public final class Database {
         this.actions = null;
     }
 
+    /**
+     * Intoarce instanta bazei de date.
+     * Baza de date a fost implementata
+     * utilizand lazy singleton.
+     * @return instanta bazei de date
+     */
     public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
@@ -41,6 +47,11 @@ public final class Database {
         return actions;
     }
 
+    /**
+     * Initializeaza lista din baza de actiuni cu cele primite la input.
+     *
+     * @param inputActions lista de actiuni
+     */
     public void initActions(final List<ActionInputData> inputActions) {
         this.actions = new ArrayList<>(inputActions);
     }
@@ -49,6 +60,11 @@ public final class Database {
         return movies;
     }
 
+    /**
+     * Initializeaza lista din baza de date cu filmele primite la input.
+     *
+     * @param inputMovies input-ul pentru filme
+     */
     private void initMovies(final List<MovieInputData> inputMovies) {
         for (MovieInputData movie: inputMovies) {
             Movies dbMovie = new Movies(movie.getTitle(), movie.getYear(),
@@ -61,6 +77,11 @@ public final class Database {
         return series;
     }
 
+    /**
+     * Initializeaza lista din baza de date cu serialele primite la input.
+     *
+     * @param inputSeries input-ul pentru seriale
+     */
     private void initSeries(final List<SerialInputData> inputSeries) {
         for (SerialInputData serial: inputSeries) {
             Series dbSerial = new Series(serial.getTitle(), serial.getYear(),
@@ -74,6 +95,11 @@ public final class Database {
         return actors;
     }
 
+    /**
+     * Initializeaza lista din baza de date cu actorii primiti la input.
+     *
+     * @param inputActors input-ul pentru actori
+     */
     private void initActors(final List<ActorInputData> inputActors) {
         for (ActorInputData actor: inputActors) {
             Actors dbActor = new Actors(actor.getName(), actor.getCareerDescription(),
@@ -86,6 +112,11 @@ public final class Database {
         return users;
     }
 
+    /**
+     * Initializeaza lista din baza de date cu userii primiti la input.
+     *
+     * @param inputUsers input-ul pentru useri
+     */
     private void initUsers(final List<UserInputData> inputUsers) {
         for (UserInputData user: inputUsers) {
             Users dbUser = new Users(user.getUsername(), user.getSubscriptionType(),
@@ -94,6 +125,11 @@ public final class Database {
         }
     }
 
+    /**
+     * Initializeaza baza de date cu input-ul primit
+     *
+     * @param input input-ul primit
+     */
     public void initDatabase(final Input input) {
         this.movies = new ArrayList<>();
         this.series = new ArrayList<>();
@@ -106,5 +142,3 @@ public final class Database {
         initActions(input.getCommands());
     }
 }
-
-

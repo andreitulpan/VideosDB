@@ -29,14 +29,24 @@ public final class InputCommands {
 
     private InputCommands() { }
 
+    /**
+     * Verifica tipul actiunii primite ca input din fisierul JSON si apeleaza
+     * pentru fiecare actiune in parte, metoda potrivita pentru tipul acesteia.
+     *
+     * @param  database  baza de date
+     * @param  fileWriter transforma output-ul in format JSON
+     * @param  arrayResult se adauga rezultatele actiunilor in format JSON
+     */
     public static void actionsExecute(final Database database, final Writer fileWriter,
                                       final JSONArray arrayResult) {
+
+        // Verific si execut fiecare actiune primita ca input
         for (ActionInputData action: database.getActions()) {
-            String stringOut = "";
+            String stringOut = "";  // Initializez string-ul de output gol
             switch (action.getActionType()) {
 
-                case "command" -> {
-                    switch (action.getType()) {
+                case "command" -> {     // Verific daca este comanda
+                    switch (action.getType()) {     // Verific tipul comenzii
                         case "favorite" ->  {
                             stringOut = UserFavorite.setFavorite(database, action);
                         }
@@ -50,8 +60,8 @@ public final class InputCommands {
                     }
                 }
 
-                case "query" -> {
-                    switch (action.getCriteria()) {
+                case "query" -> {   // Verific daca este query
+                    switch (action.getCriteria()) {     // Verific tipul query-ului
                         case "average" -> {
                             stringOut = Average.getResult(database, action);
                         }
@@ -82,8 +92,8 @@ public final class InputCommands {
                     }
                 }
 
-                case "recommendation" -> {
-                    switch (action.getType()) {
+                case "recommendation" -> {  // Verific daca este recomandare
+                    switch (action.getType()) {     // Verific tipul recomandarii
                         case "standard" -> {
                             stringOut = Standard.getResult(
                                         database, action.getUsername());
@@ -111,6 +121,7 @@ public final class InputCommands {
                 default -> { }
             }
 
+            // Scriu output-ul in format JSON si il adaug in arrayResult
             JSONObject output = null;
             try {
                 output = fileWriter.writeFile(action.getActionId(), null, stringOut);

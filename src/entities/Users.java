@@ -35,13 +35,24 @@ public final class Users {
         return favoriteMovies;
     }
 
+    /**
+     * Calculeaza numarul de filme show-uri care
+     * au primit rating de la user-ul curent
+     *
+     * @param database baza de date
+     * @return numarul de rating-uri acordate de user
+     */
     public int numberOfRatings(final Database database) {
         int counter = 0;
+
+        // Numar pentru cate filme user-ul a acordat rating
         for (Movies movie: database.getMovies()) {
             if (movie.getRatings().containsKey(username)) {
                 counter++;
             }
         }
+
+        // Numar pentru cate seriale user-ul a acordat rating
         for (Series serial: database.getSeries()) {
             for (Seasons season: serial.getSeasons()) {
                 if (season.getRatings().containsKey(username)) {
@@ -49,6 +60,7 @@ public final class Users {
                 }
             }
         }
+
         return counter;
     }
 

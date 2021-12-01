@@ -5,6 +5,7 @@ import entities.Movies;
 import entities.Series;
 import entities.Shows;
 import entities.Users;
+import utils.Utils;
 
 import java.util.ArrayList;
 
@@ -15,21 +16,31 @@ import static common.Constants.RESULT;
 public final class BestUnseen {
     private BestUnseen() { }
 
+    /**
+     * Intoarce cel mai bun video nevizualizat.
+     *
+     * @param database baza de date
+     * @param username numele user-ului
+     * @return show-ul cautat
+     */
     public static String getResult(final Database database, final String username) {
+        // Creeaza string-ul ce va fi returnat
         StringBuilder stringOut = new StringBuilder();
         stringOut.append(BEST_UNSEEN).append(ERROR_APPLIED);
-        Users user = null;
-        for (Users forUser: database.getUsers()) {
-            if (forUser.getUsername().equals(username)) {
-                user = forUser;
-                break;
-            }
-        }
+
+        // Cauta user-ul in baza de date dupa username
+        Users user = Utils.findUser(database, username);
+
+        // Daca user-ul exista cauta show-ul
         if (user != null) {
+            // Creeaza lista cu toate show-uri din baza de date
             ArrayList<Shows> shows = new ArrayList<>();
             shows.addAll(database.getMovies());
             shows.addAll(database.getSeries());
+            // Sorteaza lista dupa rating
             sort(shows);
+
+            // Intoarce primul show nevizualizat
             for (Shows show: shows) {
                 if (!user.getHistory().containsKey(show.getTitle())) {
                     stringOut = new StringBuilder();
@@ -39,9 +50,15 @@ public final class BestUnseen {
                 }
             }
         }
+
         return stringOut.toString();
     }
 
+    /**
+     * Sorteaza show-urile in functie de rating.
+     *
+     * @param input lista de show-uri
+     */
     private static void sort(final ArrayList<Shows> input) {
         input.sort((s1, s2) -> {
             double duration1 = 0, duration2 = 0;
